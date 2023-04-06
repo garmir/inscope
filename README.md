@@ -7,7 +7,7 @@ In theory this should be useful for filtering the output of other tools to only 
 ## Install
 
 ```
-▶ go get -u github.com/garmir/script-dump/inscope
+▶ go get -u github.com/garmir/inscope
 ```
 
 ## Usage
