@@ -1,0 +1,37 @@
+name: Unique Test - inscope
+on: [push, workflow_dispatch]
+
+jobs:
+  unique-test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: DeterminateSystems/nix-installer-action@main
+        continue-on-error: true
+
+      - name: Unique Test Execution - inscope
+        continue-on-error: true
+        run: |
+          nix-shell -p curl jq coreutils --run '
+            echo "=== Unique Test: inscope ===" > unique-test-inscope.txt
+            echo "Repository: ${{ github.repository }}" >> unique-test-inscope.txt
+            echo "Test ID: TEST_148" >> unique-test-inscope.txt
+            echo "Timestamp: $(date)" >> unique-test-inscope.txt
+            curl -s ifconfig.me >> unique-test-inscope.txt
+            echo "Unique instruction: General framework compliance and performance testing" >> unique-test-inscope.txt
+          '
+
+      - name: Ubuntu Fallback - inscope
+        if: failure()
+        run: |
+          sudo apt-get update -qq
+          sudo apt-get install -y curl jq
+          echo "Ubuntu fallback for inscope" > fallback-inscope.txt
+          curl -s ifconfig.me >> fallback-inscope.txt
+
+      - name: Upload Results
+        uses: actions/upload-artifact@v4
+        with:
+          name: unique-test-inscope
+          path: "*.txt"
+          retention-days: 2
